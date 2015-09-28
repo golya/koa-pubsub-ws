@@ -1,0 +1,32 @@
+{
+  "name": "koa-pubsub-ws",
+  "version": "1.0.0",
+  "keywords": [
+    "koa",
+    "middleware",
+    "websocket",
+    "session",
+    "pubsub"
+  ],
+  "dependencies": {
+    "co": "^4.3.1",
+    "debug": "^2.1.1",
+    "keygrip": "^1.0.1",
+    "koa-ws-cookie-helper": "^1.0.3",
+    "lodash": "^3.10.1",
+    "object-assign": "^2.0.0",
+    "replacestream": "^2.0.0",
+    "ws": "^0.7.1"
+  },
+  "devDependencies": {
+    "chai": "^2.0.0",
+    "co-mocha": "^1.0.1",
+    "koa": "^0.17.0",
+    "koa-generic-session": "^1.6.0",
+    "gulp": "^3.9.0",
+    "gulp-mocha": "^2.1.3",
+    "mocha": "^2.1.0",
+    "mocha-lcov-reporter": "0.0.1",
+    "supertest": "^0.15.0"
+  }
+}
