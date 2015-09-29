@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var objectAssign = require('object-assign');
 var replaceStream = require('replacestream');
-var debug = require('debug')('koa-ws:middleware');
+var debug = require('debug')('koa-pubsub-ws:middleware');
 
 var KoaWebSocketServer = require('./server');
 

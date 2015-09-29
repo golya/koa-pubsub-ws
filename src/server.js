@@ -10,7 +10,7 @@ var Request = require('./request');
 var protocol = require('./jsonrpc');
 
 // Debug output
-var debug = require('debug')('koa-ws:server');
+var debug = require('debug')('koa-pubsub-ws:server');
 
 /**
  * KoaWebSocketServer object

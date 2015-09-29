@@ -14,7 +14,7 @@ var protocol = require('./jsonrpc');
 // Debug output
 var debug;
 try {
-    debug = require('debug')('koa-ws:client');
+    debug = require('debug')('koa-pubsub-ws:client');
 } catch (e) {
     debug = console.log.bind(console);
 }

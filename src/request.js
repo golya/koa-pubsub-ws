@@ -1,4 +1,4 @@
-var debug = require('debug')('koa-ws:request');
+var debug = require('debug')('koa-pubsub-ws:request');
 
 function Request (socket, payload) {
     this.socket = socket;
