@@ -18,7 +18,11 @@ function jsonrpc_request(debug, socket, data) {
     if (data === '--thump--') {
         debug('← Thump!');
         setTimeout(function () {
-            socket.send('--thump--');
+            try {
+                socket.send('--thump--');
+            } catch (e) {
+                console.error('Something went wrong: ', e.stack);
+            }
         }.bind(this), this._options.heartbeatInterval || 5000);
         return;
     }
