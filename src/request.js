@@ -39,7 +39,7 @@ Request.prototype.result = function (result) {
     }
 };
 
-Request.prototype.emit = function (result, user) {
+Request.prototype.emit = function (socket, result, user) {
     try {
         var payload = {
             jsonrpc: '2.0',
@@ -48,7 +48,7 @@ Request.prototype.emit = function (result, user) {
             id: this.currentId
         };
         debug('→ EMIT (subscribeQueue.%s) Result: %o', payload.id, payload.result);
-        this.socket.send(JSON.stringify(payload));
+        socket.send(JSON.stringify(payload));
     } catch (e) {
         console.error('Something went wrong: ', e.stack);
     }

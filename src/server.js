@@ -208,10 +208,14 @@ KoaWebSocketServer.prototype.register = function (method, generator, expose) {
  *
  */
 KoaWebSocketServer.prototype.subscribe = function* subscribe() {
-    if (!(this.params.channel in this.socket.subscribe)) {
+    if (!(this.params.channel in this.socket.subscriptions)) {
         this.socket.subscriptions[this.params.channel] = [];
     }
-    this.socket.subscriptions[this.params.channel].push(this.params.user);
+    this.socket.subscriptions[this.params.channel].push({
+            socket: this.socket,
+            user: this.params.user,
+        }
+    );
 
     this.result('ok');
 };
@@ -229,7 +233,7 @@ KoaWebSocketServer.prototype.publish = function* publish(test) {
     var that = this;
     _.forEach(this.socket.subscriptions[this.params.channel], function(element){
         try {
-            that.emit(that.params.message, element);
+            that.emit(element.socket, that.params.message, element.user);
         } catch (e) {
             console.log(e.stack);
         }
