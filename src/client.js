@@ -23,8 +23,12 @@ if (typeof WebSocket === 'undefined') {
     var WebSocket = require('ws');
 }
 
-var guessedAddress =  'localhost:3000';
+var guessedAddress = 'localhost:3000';
+var window = window || null;
 
+if (window) {
+    guessedAddress = window.location.host;
+}
 
 function Client() {
     // Init EventEmitter
