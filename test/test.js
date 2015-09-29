@@ -212,13 +212,13 @@ describe('koa-pubsub-ws', function () {
             }
 
             client.subscribe('u1', 'r1', function(err, payload){
-                expect(['ok', { result: { text: 'test' }, user: 'u1' }]).to.contain(payload);
+                expect(['ok', { result: { text: 'test' }, user: 'u1', id: 'r1' }]).to.contain(payload);
                 i++;
                 isDone();
             });
 
             client.subscribe('u2', 'r2', function(err, payload){
-                expect(['ok', { result: { text: 'test' }, user: 'u1' }]).to.contain(payload);
+                expect(['ok', { result: { text: 'test' }, user: 'u1', id: 'r2' }]).to.contain(payload);
                 i++;
                 isDone();
             });

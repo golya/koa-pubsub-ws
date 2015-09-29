@@ -43,7 +43,7 @@ Request.prototype.emit = function (socket, result, user) {
     try {
         var payload = {
             jsonrpc: '2.0',
-            result: {result: result, user: user},
+            result: {result: result, user: user, id: this.currentId},
             publication: true,
             id: this.currentId
         };
