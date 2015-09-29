@@ -13,7 +13,7 @@ module.exports = function (app, passedOptions) {
         clientFilePath: '/koaws.js',
         heartbeat: true,
         heartbeatInterval: 5000,
-        subscribe: null
+        subscribe: {}
     };
     // Override with passed options
     objectAssign(options, passedOptions || {});
