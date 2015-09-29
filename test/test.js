@@ -218,18 +218,18 @@ describe('koa-pubsub-ws', function () {
             });
 
             client.subscribe('u2', 'r2', function(err, payload){
-                expect(['ok', { result: { text: 'test' }, user: 'u2' }]).to.contain(payload);
+                expect(['ok', { result: { text: 'test' }, user: 'u1' }]).to.contain(payload);
                 i++;
                 isDone();
             });
 
-            client.publish('r1', {'text': 'test'}, function(err, payload) {
+            client.publish('r1', 'u1', {'text': 'test'}, function(err, payload) {
                 expect(payload).to.equal('published');
                 i++;
                 isDone();
             });
 
-            client.publish('r2', {'text': 'test'}, function(err, payload) {
+            client.publish('r2', 'u1', {'text': 'test'}, function(err, payload) {
                 expect(payload).to.equal('published');
                 i++;
                 isDone();

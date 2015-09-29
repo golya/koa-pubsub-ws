@@ -220,12 +220,12 @@ Client.prototype.subscribe = function (user, channel, cb) {
     }
 };
 
-Client.prototype.publish = function (channel, message, cb) {
+Client.prototype.publish = function (channel, user, message, cb) {
     var cb = cb || null;
     var payload = {
         jsonrpc: '2.0',
         method: '__publish',
-        params: {message: message, channel: channel},
+        params: {message: message, user:user, channel: channel},
         id: channel
     };
 

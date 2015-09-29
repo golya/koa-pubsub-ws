@@ -233,7 +233,7 @@ KoaWebSocketServer.prototype.publish = function* publish(test) {
     var that = this;
     _.forEach(this.socket.subscriptions[this.params.channel], function(element){
         try {
-            that.emit(element.socket, that.params.message, element.user);
+            that.emit(element.socket, that.params.message, that.params.user);
         } catch (e) {
             console.log(e.stack);
         }
