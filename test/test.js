@@ -35,13 +35,13 @@ describe('koa-pubsub-ws', function () {
         var middleware = require('../src/middleware');
 
         it('expect to be able to attach middleware to app', function () {
-            function *subscribe() {
+            function *validatePubSub() {
                 yield 'test'
             }
             app.use(middleware(app, {
                 heartbeatInterval: 500,
                 heartbeat: false,
-                subscribe: subscribe
+                validatePubSub: validatePubSub
             }));
             expect(app).to.have.property('ws');
         });

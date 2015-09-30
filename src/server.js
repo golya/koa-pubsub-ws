@@ -154,8 +154,8 @@ KoaWebSocketServer.prototype.onConnection = function (socket) {
 
     socket.subscriptions = this.app.ws.subscriptions;
 
-    if (this._options.subscribe && this._options.subscribe.constructor.name == 'GeneratorFunction') {
-        socket.subscribe = this._options.subscribe
+    if (this._options.validatePubSub && this._options.validatePubSub.constructor.name == 'GeneratorFunction') {
+        socket.validatePubSub = this._options.validatePubSub
     }
 
     // Send initial thump
@@ -208,23 +208,33 @@ KoaWebSocketServer.prototype.register = function (method, generator, expose) {
  *
  */
 KoaWebSocketServer.prototype.subscribe = function* subscribe() {
-    if (!(this.params.channel in this.socket.subscriptions)) {
-        this.socket.subscriptions[this.params.channel] = [];
-    }
-    this.socket.subscriptions[this.params.channel].push({
-            socket: this.socket,
-            user: this.params.user,
+    if (this.socket.validatePubSub) {
+        var value = this.socket.validatePubSub().next().value;
+        if (!value) {
+            this.result('wrong request');
+            return;
         }
-    );
+    }
+
+    if (!(this.params.channel in this.socket.subscriptions)) {
+        this.socket.subscriptions[this.params.channel] = {};
+    }
+
+    if (!(this.params.user in this.socket.subscriptions[this.params.channel])) {
+        this.socket.subscriptions[this.params.channel][this.params.user] = {};
+    } else {
+        delete this.socket.subscriptions[this.params.channel][this.params.user];
+    }
+
+    this.socket.subscriptions[this.params.channel][this.params.user].socket = this.socket;
 
     this.result('ok');
 };
 
 KoaWebSocketServer.prototype.publish = function* publish(test) {
-
-    if (this.socket.subscribe) {
-        var iterator = this.socket.subscribe().next().value;
-        if (!iterator) {
+    if (this.socket.validatePubSub) {
+        var value = this.socket.validatePubSub().next().value;
+        if (!value) {
             this.result('wrong request');
             return;
         }
@@ -237,7 +247,7 @@ KoaWebSocketServer.prototype.publish = function* publish(test) {
         } catch (e) {
             console.log(e.stack);
         }
-    })
+    });
 
     this.result('published');
 };
