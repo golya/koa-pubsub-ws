@@ -222,8 +222,6 @@ KoaWebSocketServer.prototype.subscribe = function* subscribe() {
 
     if (!(this.params.user in this.socket.subscriptions[this.params.channel])) {
         this.socket.subscriptions[this.params.channel][this.params.user] = {};
-    } else {
-        delete this.socket.subscriptions[this.params.channel][this.params.user];
     }
 
     this.socket.subscriptions[this.params.channel][this.params.user].socket = this.socket;
