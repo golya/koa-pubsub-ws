@@ -120,17 +120,6 @@ describe('koa-pubsub-ws', function () {
             });
         });
 
-        it('expect to be able to serve the client library at /koaws.js', function (done) {
-            request(app.server)
-                .get('/koaws.js')
-                .expect(200)
-                .expect('Content-Type', 'application/javascript')
-                .end(function (err, res) {
-                    if (err) throw err;
-                    done();
-                });
-        });
-
         it('expect heartbeat response from client', function (done) {
             socket.once('message', function (message) {
                 if (message === '--thump--') {

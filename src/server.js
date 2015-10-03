@@ -60,6 +60,7 @@ KoaWebSocketServer.prototype.onConnection = function (socket) {
     var sockets = this._sockets;
     var sessions = this._sessions;
     var awaitingResults = {};
+    var that = this;
 
     socket.method = function () {
         var cb = null;
@@ -132,12 +133,15 @@ KoaWebSocketServer.prototype.onConnection = function (socket) {
     };
 
     socket.on('close', function () {
-        debug('Client disconnected');
-        if (socket.session && Array.isArray(sockets[socket.session.id])) {
-            sockets[socket.session.id].splice(
-                sockets[socket.session.id].indexOf(socket),
-                1
-            );
+        var sessionId = cookieHelper.get(socket, 'koa:sess', that.app.keys);
+        if (sessionId && sessionId in that.app.ws.sessions) {
+            try {
+                console.log('Client disconnected', socket.session.passport.user.public_id);
+                delete that.app.ws.sessions[sessionId];
+                delete socket.session
+            } catch (e) {
+                return;
+            }
         }
     });
 
@@ -164,19 +168,10 @@ KoaWebSocketServer.prototype.onConnection = function (socket) {
     }
 
     // Let's try and connect the socket to session
-    var sessionId = cookieHelper.get(socket, 'koa.sid', this.app.keys);
+    var sessionId = cookieHelper.get(socket, 'koa:sess', this.app.keys);
     if (sessionId) {
-        if (typeof this._sockets[sessionId] === 'undefined') {
-            this._sockets[sessionId] = [];
-        }
-        this._sockets[sessionId].push(socket);
-
-        if (this.app.sessionStore) {
-            var _this = this;
-            (co.wrap(function* () {
-                socket.session = yield _this.app.sessionStore.get('koa:sess:' + sessionId);
-                socket.method('session', socket.session);
-            })());
+        if (sessionId in this.app.ws.sessions) {
+            socket.session = this.app.ws.sessions[sessionId];
         }
     }
 }
