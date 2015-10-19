@@ -169,12 +169,12 @@ KoaWebSocketServer.prototype.onConnection = function (socket) {
 
     // Let's try and connect the socket to session
     var sessionId = cookieHelper.get(socket, 'koa:sess', this.app.keys);
-    if (sessionId) {
+    if (sessionId && this.app.ws.sessions) {
         if (sessionId in this.app.ws.sessions) {
             socket.session = this.app.ws.sessions[sessionId];
         }
     }
-}
+};
 
 /**
  * Register a method for server-side
