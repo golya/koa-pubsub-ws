@@ -4,6 +4,7 @@ var objectAssign = require('object-assign');
 var replaceStream = require('replacestream');
 var debug = require('debug')('koa-pubsub-ws:middleware');
 var Keygrip = require('keygrip');
+var https = require('https');
 
 var KoaWebSocketServer = require('./server');
 
@@ -19,15 +20,15 @@ module.exports = function (app, passedOptions) {
     // Override with passed options
     objectAssign(options, passedOptions || {});
 
-    var oldListen = app.listen;
-    app.listen = function () {
-        debug('Attaching server...')
-        app.server = oldListen.apply(app, arguments);
+    app.listen = function (options) {
+        debug('Attaching server...');
+
+        app.server = https.createServer(options, app.callback()).listen(443);
         app.ws.listen(app.server);
         app.ws.subscriptions = {};
         app.address = function() {
             return app.server.address();
-        }
+        };
         return app;
     };
 
@@ -61,7 +62,7 @@ module.exports = function (app, passedOptions) {
         var index = keygrip.index(data, signedCookie);
         if(index < 0) return;
         return value;
-    };
+    }
 
 
     // cache used by cookie pattern matcher
@@ -75,7 +76,7 @@ module.exports = function (app, passedOptions) {
             name.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") +
             "=([^;]*)"
         );
-    };
+    }
 
     app.ws = app.io = new KoaWebSocketServer(app, options);
 
