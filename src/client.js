@@ -106,11 +106,11 @@ Client.prototype.onMessage = function (data) {
 
 Client.prototype.connect = function (address) {
     address = address || guessedAddress;
-    address = address.replace('ws://', '');
+    address = address.replace('wss://', '');
 
     // Initialize WebSocket client
-    debug('Connecting to server: ws://%s', address);
-    this.socket = new WebSocket('ws://' + address);
+    debug('Connecting to server: wss://%s', address);
+    this.socket = new WebSocket('wss://' + address);
 
     // Add helper handlers for the folowing events
     ['open', 'close', 'message']
